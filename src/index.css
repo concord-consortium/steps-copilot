@@ -357,6 +357,39 @@ textarea {
   color: #b91c1c;
   font-size: 13px;
 }
+@keyframes swell-out {
+  0%   { transform: scale(0.2); opacity: 0; }
+  30%  { transform: scale(1.1); opacity: 1; }
+  65%  { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+.plan-success {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  pointer-events: none;
+}
+.plan-success-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: swell-out 1.5s ease-in-out forwards;
+  opacity: 0; /* start hidden until animation fires */
+}
+.plan-success-gif {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.plan-success-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-dark, #16a34a);
+  letter-spacing: 0.02em;
+}
 
 /* ---------- Chat (fills remaining sidebar height) ---------- */
 .sb-chat {

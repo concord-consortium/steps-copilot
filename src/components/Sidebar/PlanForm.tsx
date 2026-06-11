@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { apiFetch } from '../../lib/api';
+import planSuccessGif from '../../assets/plan-success.gif';
 
 interface Props {
   performId: string | null;
@@ -47,11 +48,22 @@ export function PlanForm({ performId }: Props) {
           <button type="submit" disabled={!performId || submitting || !text.trim()}>
             {submitting ? 'Submitting…' : 'Submit plan'}
           </button>
-          {result && (
-            <span className={result.ok ? 'plan-ok' : 'plan-err'}>{result.msg}</span>
+          {result && !result.ok && (
+            <span className="plan-err">{result.msg}</span>
           )}
         </div>
       </form>
+      {result?.ok && (
+        <div className="plan-success">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="plan-success-item" style={{ animationDelay: `${i * 0.15}s` }}
+              onAnimationEnd={i === 2 ? () => setResult(null) : undefined}>
+              <img src={planSuccessGif} alt="" className="plan-success-gif" />
+              <span className="plan-success-label">Great!</span>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
