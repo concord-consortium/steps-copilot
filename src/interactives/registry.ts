@@ -1,4 +1,5 @@
 import type { HarnessLog } from '../lib/types';
+import { hurricaneExplorerContext } from './hurricane-explorer';
 import { wildfireExplorerContext } from './wildfire-explorer';
 
 /** Turn a matched log into a short natural-language line for the tutor. */
@@ -32,6 +33,10 @@ export const INTERACTIVES: Record<
   string,
   { url: string; context: InteractiveContext }
 > = {
+  'hurricane-explorer': {
+    url: 'https://hurricane.concord.org/branch/master/index.html',
+    context: hurricaneExplorerContext
+  },
   'wildfire-explorer': {
     url: 'https://wildfire.concord.org/branch/master/index.html?preset=plainsTwoZone&terrainEditable=true',
     context: wildfireExplorerContext,
