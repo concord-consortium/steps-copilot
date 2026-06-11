@@ -3,12 +3,13 @@ import { apiFetch } from '../../lib/api';
 
 interface Props {
   performId: string | null;
+  onPlanSubmitted?: (text: string) => void;
 }
 
 // Plan section (SPEC §7.2). Textarea + Submit → POST planning-submissions with the typed
 // text only (the snapshot-coupling question resolved to typed-text-only, SPEC §12). Text is
 // kept after submit so the student can revise.
-export function PlanForm({ performId }: Props) {
+export function PlanForm({ performId, onPlanSubmitted }: Props) {
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; msg: string } | null>(null);
@@ -23,6 +24,7 @@ export function PlanForm({ performId }: Props) {
         method: 'POST',
         body: { submissionText: text.trim() },
       });
+      onPlanSubmitted?.(text.trim());
       setResult({ ok: true, msg: 'Plan submitted.' });
     } catch (e) {
       setResult({ ok: false, msg: (e as Error).message });

@@ -200,6 +200,387 @@ textarea {
   margin-left: auto;
 }
 
+/* ---------- Internal / Sandpiper section ---------- */
+.sp-section {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+  background: #fafbfc;
+}
+.sp-header {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+.sp-header:hover {
+  color: var(--text);
+}
+.sp-lock {
+  font-size: 12px;
+}
+.sp-caret {
+  margin-left: auto;
+}
+.sp-body {
+  border-top: 1px dashed var(--border);
+  padding: 8px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sp-row {
+  font-size: 13px;
+  padding: 4px 0;
+}
+.sp-err-row {
+  font-size: 13px;
+  color: #b91c1c;
+}
+.sp-auth-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.sp-runs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sp-run {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.sp-run-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.sp-run-name {
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.sp-tag {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.sp-tag-done   { background: #dcfce7; color: #166534; }
+.sp-tag-running { background: #fef9c3; color: #713f12; }
+.sp-tag-err    { background: #fef2f2; color: #b91c1c; }
+.sp-tag-muted  { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+.sp-link {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sp-link:hover { text-decoration: underline; }
+.sp-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.sp-footer {
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+.sp-projects {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sp-project {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--card);
+}
+.sp-project-head {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sp-project-head:hover { background: var(--bg); }
+.sp-project-runs {
+  border-top: 1px solid var(--border);
+  background: #fafbfc;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Sandpiper run detail view ---------- */
+.sp-run-view {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+.sp-run-view-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  overflow: hidden;
+}
+.sp-run-view-title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sp-run-view-body {
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.sp-overview-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.sp-stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+}
+.sp-stat-val {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.sp-stat-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.sp-section-title {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.sp-coverage, .sp-sessions {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.sp-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sp-bar-label {
+  font-size: 13px;
+  width: 210px;
+  flex: 0 0 auto;
+  color: var(--text);
+}
+.sp-bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.sp-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.sp-bar-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  width: 34px;
+  text-align: right;
+  flex: 0 0 auto;
+}
+.sp-run-clickable {
+  cursor: pointer;
+}
+.sp-run-clickable:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- Session detail ---------- */
+.sp-session-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sp-detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.sp-detail-name {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+.sp-detail-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.sp-plan-quote {
+  margin: 0;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  font-style: italic;
+}
+.sp-summary {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.sp-annotations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-annotation {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.sp-ann-yes { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.sp-ann-no  { background: var(--bg); border: 1px solid var(--border); opacity: 0.6; }
+.sp-ann-icon {
+  font-weight: 700;
+  flex: 0 0 auto;
+  width: 16px;
+}
+.sp-ann-yes .sp-ann-icon { color: #16a34a; }
+.sp-ann-no  .sp-ann-icon { color: var(--muted); }
+.sp-ann-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.sp-ann-concept { font-weight: 600; }
+.sp-ann-evidence { color: var(--muted); font-style: italic; }
+
+/* ---------- Local session transcript ---------- */
+.sp-transcript {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.sp-turn {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.sp-turn-role {
+  flex: 0 0 56px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-top: 2px;
+}
+.sp-turn-student .sp-turn-role { color: var(--student); }
+.sp-turn-tutor   .sp-turn-role { color: var(--muted); }
+.sp-turn-text { flex: 1; white-space: pre-wrap; word-break: break-word; }
+
+/* Upload button */
+.sp-upload-btn {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+.sp-upload-btn:hover { background: var(--accent); color: #fff; }
+.sp-upload-btn:disabled { opacity: 0.5; cursor: default; }
+
 /* ---------- Harness (75/25 split) ---------- */
 .harness {
   display: flex;
