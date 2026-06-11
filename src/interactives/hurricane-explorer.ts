@@ -97,7 +97,7 @@ Start your initial response with a warm greeting and make it very encouraging of
 the simulation controls and encourage play as the student develops their plan.  
 `;
 
-export const wildfireExplorerContext: InteractiveContext = {
+export const hurricaneExplorerContext: InteractiveContext = {
   name: 'Hurricane Explorer',
   description:
     `A hurricane simulation (hurricane.concord.org) where students set starting hurricane location, season, ` +
