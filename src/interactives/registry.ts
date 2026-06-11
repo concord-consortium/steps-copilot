@@ -1,6 +1,7 @@
 import type { HarnessLog } from '../lib/types';
 import { hurricaneExplorerContext } from './hurricane-explorer';
 import { wildfireExplorerContext } from './wildfire-explorer';
+import { codapContext } from './codap';
 
 /** Turn a matched log into a short natural-language line for the tutor. */
 export interface LogMessageSpec {
@@ -40,6 +41,10 @@ export const INTERACTIVES: Record<
   'wildfire-explorer': {
     url: 'https://wildfire.concord.org/branch/master/index.html?preset=plainsTwoZone&terrainEditable=true',
     context: wildfireExplorerContext,
+  },
+  codap: {
+    url: 'https://codap.concord.org/app/?v=3&interactiveApi#file=examples:Roller%20Coasters',
+    context: codapContext,
   },
 };
 
