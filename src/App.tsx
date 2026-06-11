@@ -1,61 +1,17 @@
-import { useEffect, useMemo, useState } from 'react';
-import type { Session } from '@supabase/supabase-js';
-import { supabase } from './lib/supabase';
+import { useMemo } from 'react';
 import { resolveInteractive, availableInteractiveKeys } from './lib/url';
-import { Login } from './components/Login';
-import { Picker } from './components/Picker';
 import { Harness } from './components/Harness';
-import type { Problem } from './lib/types';
 
-type Selection = { courseId: string; problem: Problem };
-
+// STEPS auth + course/problem picker have been removed: the harness now talks directly to
+// OpenAI/Anthropic and drives the tutor from a hardcoded problem (src/problem.ts), so it boots
+// straight into the Harness for the resolved interactive (defaults to wildfire-explorer).
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [selection, setSelection] = useState<Selection | null>(null);
-
-  // The `interactive` query param is read once at load and held for the whole session.
   const interactive = useMemo(() => resolveInteractive(), []);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoaded(true);
-    });
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      if (!s) setSelection(null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  async function signOut() {
-    await supabase.auth.signOut();
-  }
-
-  // Missing/unknown `interactive` key → config error screen (SPEC §3).
+  // Present-but-unknown `interactive` key → config error screen.
   if (!interactive) return <InteractiveError />;
 
-  if (!loaded) return <div className="muted center fullscreen">Loading…</div>;
-  if (!session) return <Login />;
-  if (selection) {
-    return (
-      <Harness
-        courseId={selection.courseId}
-        problem={selection.problem}
-        interactive={interactive}
-        onBack={() => setSelection(null)}
-      />
-    );
-  }
-  return (
-    <Picker
-      onSignOut={signOut}
-      onPick={(courseId, problem) => setSelection({ courseId, problem })}
-    />
-  );
+  return <Harness interactive={interactive} />;
 }
 
 function InteractiveError() {
@@ -65,8 +21,7 @@ function InteractiveError() {
       <div className="login-card">
         <h1>STEPS Copilot</h1>
         <p className="subtitle">
-          Add an <code>?interactive=&lt;key&gt;</code> query parameter to choose which
-          interactive to host.
+          That <code>?interactive=&lt;key&gt;</code> is not registered. Choose one below.
         </p>
         <div>
           <strong>Available interactives:</strong>

@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import type { ChatTurn, PerformChat } from '../../lib/usePerformChat';
+import type { ChatTurn, LlmChat } from '../../lib/useLlmChat';
 
 interface Props {
-  chat: PerformChat;
+  chat: LlmChat;
 }
 
-// Sidebar chat (SPEC §7.3). Lifts poc Chat.tsx's compose/optimistic flow, but rendering of
-// the message list is driven by the classified turns from usePerformChat — normal turns are
-// bubbles; log turns and their tutor replies collapse to one-line "Student action…" /
-// "Student action response" rows with an expand toggle (SPEC §8.2).
+// Sidebar chat. Compose/optimistic flow with rendering driven by the classified turns from
+// useLlmChat — normal turns are bubbles; log turns and (optionally) their tutor replies
+// collapse to one-line "Student action…" / "Student action response" rows with an expand
+// toggle.
 export function Chat({ chat }: Props) {
-  const { turns, ready, status, error, sendStudentMessage } = chat;
+  const { turns, ready, error, sendStudentMessage } = chat;
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -30,8 +30,6 @@ export function Chat({ chat }: Props) {
     });
   }
 
-  const completed = status === 'completed';
-
   async function onSend(e: FormEvent) {
     e.preventDefault();
     const text = input.trim();
@@ -49,8 +47,8 @@ export function Chat({ chat }: Props) {
 
   // Refocus the composer once the send finishes and the input is re-enabled.
   useEffect(() => {
-    if (ready && !sending && !completed) inputRef.current?.focus();
-  }, [sending, ready, completed]);
+    if (ready && !sending) inputRef.current?.focus();
+  }, [sending, ready]);
 
   return (
     <section className="sb-section sb-chat">
@@ -81,12 +79,13 @@ export function Chat({ chat }: Props) {
 
       <form className="composer" onSubmit={onSend}>
         <input
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={completed ? 'This attempt is completed.' : 'Message the tutor…'}
-          disabled={!ready || sending || completed}
+          placeholder="Message the tutor…"
+          disabled={!ready || sending}
         />
-        <button type="submit" disabled={!ready || sending || completed || !input.trim()}>
+        <button type="submit" disabled={!ready || sending || !input.trim()}>
           {sending ? '…' : 'Send'}
         </button>
       </form>
@@ -97,12 +96,7 @@ export function Chat({ chat }: Props) {
 function NormalBubble({ turn }: { turn: ChatTurn }) {
   return (
     <div className={`row ${turn.sender === 'Student' ? 'right' : 'left'}`}>
-      <div className={`bubble ${turn.pending ? 'pending' : ''}`}>
-        {turn.sender === 'Tutor' && turn.sequenceStep && (
-          <div className="phase">{turn.sequenceStep}</div>
-        )}
-        {turn.text}
-      </div>
+      <div className={`bubble ${turn.pending ? 'pending' : ''}`}>{turn.text}</div>
     </div>
   );
 }

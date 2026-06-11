@@ -1,37 +1,27 @@
 import { useRef } from 'react';
-import type { Problem } from '../lib/types';
 import type { ResolvedInteractive } from '../lib/url';
-import { usePerformChat } from '../lib/usePerformChat';
+import { useLlmChat } from '../lib/useLlmChat';
+import { LLM_LABEL } from '../lib/llm';
 import { IframeRuntime } from './IframeRuntime';
-import { StepTimeline } from './StepTimeline';
-import { ProblemStatement } from './Sidebar/ProblemStatement';
-import { PlanForm } from './Sidebar/PlanForm';
 import { Chat } from './Sidebar/Chat';
 
 interface Props {
-  courseId: string;
-  problem: Problem;
   interactive: ResolvedInteractive;
-  onBack: () => void;
 }
 
-// Main screen (SPEC §4.3): iframe left (75%), tutor sidebar right (25%). Owns perform
-// resolution + the message/log orchestration via usePerformChat, and feeds the interactive's
-// log messages into the tutor.
-export function Harness({ courseId, problem, interactive, onBack }: Props) {
-  const chat = usePerformChat({ courseId, problem, context: interactive.context });
-  // Latest interactiveState, kept for an optional snapshot (SPEC §6.1); unused in v1.
+// Main screen: iframe left (75%), tutor sidebar right (25%). The tutor now runs on a direct
+// OpenAI/Anthropic conversation (useLlmChat) seeded with the hardcoded problem, and the
+// interactive's log messages are forwarded into that conversation.
+export function Harness({ interactive }: Props) {
+  const chat = useLlmChat({ context: interactive.context });
+  // Latest interactiveState, kept for an optional snapshot; unused for now.
   const interactiveStateRef = useRef<unknown>(null);
 
   return (
     <div className="harness">
       <header className="bar">
-        <button className="link" onClick={onBack}>
-          ← Back
-        </button>
-        <strong className="chat-title">{problem.title}</strong>
-        <span className="muted harness-sub">{interactive.context.name}</span>
-        <StepTimeline currentStatus={chat.status} />
+        <strong className="chat-title">{interactive.context.name}</strong>
+        <span className="tag">{LLM_LABEL}</span>
       </header>
 
       <div className="harness-main">
@@ -55,8 +45,6 @@ export function Harness({ courseId, problem, interactive, onBack }: Props) {
         </div>
 
         <aside className="sidebar">
-          <ProblemStatement statement={problem.statement} />
-          <PlanForm performId={chat.performId} />
           <Chat chat={chat} />
         </aside>
       </div>
