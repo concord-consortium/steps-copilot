@@ -54,8 +54,6 @@ export function Chat({ chat }: Props) {
 
   return (
     <section className="sb-section sb-chat">
-      <h3 className="sb-title">Chat with tutor</h3>
-
       <div className="messages" ref={listRef}>
         {!ready && <div className="muted center">Starting session…</div>}
         {ready && turns.length === 0 && (
