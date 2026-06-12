@@ -5,6 +5,7 @@ import { resolveInteractive, availableInteractiveKeys } from './lib/url';
 import { Login } from './components/Login';
 import { Picker } from './components/Picker';
 import { Harness } from './components/Harness';
+import { SandpiperRunView } from './components/SandpiperRunView';
 import type { Problem } from './lib/types';
 
 type Selection = { courseId: string; problem: Problem };
@@ -13,6 +14,7 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [selection, setSelection] = useState<Selection | null>(null);
+  const [sandpiperRunId, setSandpiperRunId] = useState<string | null>(null);
 
   // The `interactive` query param is read once at load and held for the whole session.
   const interactive = useMemo(() => resolveInteractive(), []);
@@ -40,6 +42,9 @@ export default function App() {
 
   if (!loaded) return <div className="muted center fullscreen">Loading…</div>;
   if (!session) return <Login />;
+  if (sandpiperRunId) {
+    return <SandpiperRunView runId={sandpiperRunId} onBack={() => setSandpiperRunId(null)} />;
+  }
   if (selection) {
     return (
       <Harness
@@ -54,6 +59,7 @@ export default function App() {
     <Picker
       onSignOut={signOut}
       onPick={(courseId, problem) => setSelection({ courseId, problem })}
+      onViewSandpiperRun={(id) => setSandpiperRunId(id)}
     />
   );
 }
