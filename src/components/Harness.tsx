@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Problem } from '../lib/types';
 import type { ResolvedInteractive } from '../lib/url';
 import { usePerformChat } from '../lib/usePerformChat';
@@ -31,6 +31,8 @@ export function Harness({ courseId, problem, interactive, onBack }: Props) {
   // Latest interactiveState, kept for an optional snapshot (SPEC §6.1); unused in v1.
   const interactiveStateRef = useRef<unknown>(null);
   const planTextRef = useRef<string>('');
+  // Sidebar tab under the problem statement: Chat (default) or Plan.
+  const [tab, setTab] = useState<'chat' | 'plan'>('chat');
 
   // Persist session to localStorage whenever the status advances past plan submission,
   // and keep it updated as new turns arrive.
@@ -84,8 +86,40 @@ export function Harness({ courseId, problem, interactive, onBack }: Props) {
 
         <aside className="sidebar">
           <ProblemStatement statement={problem.statement} />
-          <PlanForm performId={chat.performId} onPlanSubmitted={(text) => { planTextRef.current = text; }} />
-          <Chat chat={chat} />
+
+          <div className="sb-tabs" role="tablist">
+            <button
+              role="tab"
+              aria-selected={tab === 'chat'}
+              className={`sb-tab ${tab === 'chat' ? 'active' : ''}`}
+              onClick={() => setTab('chat')}
+            >
+              Chat
+            </button>
+            <button
+              role="tab"
+              aria-selected={tab === 'plan'}
+              className={`sb-tab ${tab === 'plan' ? 'active' : ''}`}
+              onClick={() => setTab('plan')}
+            >
+              Plan
+            </button>
+          </div>
+
+          {/* Both panes stay mounted (toggled via CSS) so input/scroll state survives tab switches. */}
+          <div className="sb-tab-content">
+            <div className={`sb-pane ${tab === 'chat' ? '' : 'sb-pane-hidden'}`}>
+              <Chat chat={chat} />
+            </div>
+            <div className={`sb-pane ${tab === 'plan' ? '' : 'sb-pane-hidden'}`}>
+              <PlanForm
+                performId={chat.performId}
+                onPlanSubmitted={(text) => {
+                  planTextRef.current = text;
+                }}
+              />
+            </div>
+          </div>
         </aside>
       </div>
     </div>

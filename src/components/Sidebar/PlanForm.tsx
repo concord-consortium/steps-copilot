@@ -36,14 +36,12 @@ export function PlanForm({ performId, onPlanSubmitted }: Props) {
 
   return (
     <section className="sb-section sb-plan">
-      <h3 className="sb-title">Plan</h3>
-      <form onSubmit={onSubmit}>
+      <form className="plan-form" onSubmit={onSubmit}>
         <textarea
           className="plan-input"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Describe your plan…"
-          rows={3}
           disabled={!performId || submitting}
         />
         <div className="plan-row">
